@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Dyēus Games - Video Game Catalog" />
+  <title>Dyēus Games</title>
+  <link rel="stylesheet" href="/src/style.css" />
+</head>
+<body>
+<header class="site-header">
+  <div class="header-container">
+    <div class="logo">
+      <span class="logo-icon">🎮</span>
+      <span class="logo-text">DYĒUS GAMES</span>
+    </div>
+
+    <div class="search-bar" role="search">
+      <input
+          type="search"
+          id="search-input"
+          placeholder="Search games..."
+          aria-label="Search games"
+      />
+    </div>
+
+    <nav class="main-nav" aria-label="Main navigation">
+      <ul>
+        <li><a href="#" class="nav-link active">Store</a></li>
+        <li><a href="#" class="nav-link">Library</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main class="main-content">
+  <aside class="sidebar" aria-label="Filters and sorting">
+    <h2>Filters</h2>
+
+    <div class="filter-group">
+      <label for="sort-select">Sort by:</label>
+      <select id="sort-select">
+        <option value="-added">Popularity</option>
+        <option value="-rating">Rating</option>
+        <option value="-released">Release Date</option>
+        <option value="name">Name (A-Z)</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label for="genre-select">Genre:</label>
+      <select id="genre-select">
+        <option value="">All Genres</option>
+        <option value="action">Action</option>
+        <option value="indie">Indie</option>
+        <option value="adventure">Adventure</option>
+        <option value="role-playing-games-rpg">RPG</option>
+        <option value="shooter">Shooter</option>
+      </select>
+    </div>
+  </aside>
+
+  <section class="catalog-section" aria-live="polite">
+    <h1 class="section-title">Games Catalog</h1>
+
+    <div id="loading-state" class="state-container hidden">
+      <div class="spinner"></div>
+      <p>Loading games...</p>
+    </div>
+
+    <div id="error-state" class="state-container hidden">
+      <p class="error-message">Failed to load data. Please try again later.</p>
+    </div>
+
+    <div id="games-grid" class="games-grid">
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <p>&copy; 2026 Dyēus Games</p>
+</footer>
+
+<script type="module" src="/src/main.ts"></script>
+</body>
+</html>
