@@ -1,44 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Dyēus Games - Video Game Catalog" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dyēus Games</title>
-  <link rel="stylesheet" href="/src/style.css" />
+  <link rel="stylesheet" href="/src/style.css">
 </head>
 <body>
+<div class="ornament-border top-border"></div>
+
 <header class="site-header">
   <div class="header-container">
     <div class="logo">
-      <span class="logo-icon">🎮</span>
       <span class="logo-text">DYĒUS GAMES</span>
     </div>
 
-    <div class="search-bar" role="search">
-      <input
-          type="search"
-          id="search-input"
-          placeholder="Search games..."
-          aria-label="Search games"
-      />
+    <div class="search-bar">
+      <input type="search" id="search-input" placeholder="Search store">
     </div>
 
-    <nav class="main-nav" aria-label="Main navigation">
+    <nav class="main-nav">
       <ul>
-        <li><a href="#" class="nav-link active">Store</a></li>
-        <li><a href="#" class="nav-link">Library</a></li>
+        <li><a href="#" class="nav-link">Discover</a></li>
+        <li><a href="#" class="nav-link active">Browse</a></li>
+        <li><a href="#" class="nav-link">News</a></li>
       </ul>
     </nav>
   </div>
 </header>
 
 <main class="main-content">
-  <aside class="sidebar" aria-label="Filters and sorting">
-    <h2>Filters</h2>
+  <section class="catalog-section">
+    <div id="loading-state" class="state-container hidden">
+      <div class="loader-ornament"></div>
+    </div>
+
+    <div id="error-state" class="state-container hidden">
+      <p class="error-message">Failed to load data.</p>
+    </div>
+
+    <div id="games-grid" class="games-grid"></div>
+
+    <div id="scroll-trigger" class="scroll-trigger">
+      <div id="more-loader" class="loader-ornament hidden"></div>
+    </div>
+  </section>
+
+  <aside class="sidebar hidden" id="sidebar">
+    <div class="filters-header">
+      <h2>Filters</h2>
+      <button id="reset-filters">Reset</button>
+    </div>
 
     <div class="filter-group">
-      <label for="sort-select">Sort by:</label>
+      <label for="sort-select">Sort</label>
       <select id="sort-select">
         <option value="-added">Popularity</option>
         <option value="-rating">Rating</option>
@@ -48,7 +63,7 @@
     </div>
 
     <div class="filter-group">
-      <label for="genre-select">Genre:</label>
+      <label for="genre-select">Genre</label>
       <select id="genre-select">
         <option value="">All Genres</option>
         <option value="action">Action</option>
@@ -59,27 +74,9 @@
       </select>
     </div>
   </aside>
-
-  <section class="catalog-section" aria-live="polite">
-    <h1 class="section-title">Games Catalog</h1>
-
-    <div id="loading-state" class="state-container hidden">
-      <div class="spinner"></div>
-      <p>Loading games...</p>
-    </div>
-
-    <div id="error-state" class="state-container hidden">
-      <p class="error-message">Failed to load data. Please try again later.</p>
-    </div>
-
-    <div id="games-grid" class="games-grid">
-    </div>
-  </section>
 </main>
 
-<footer class="site-footer">
-  <p>&copy; 2026 Dyēus Games</p>
-</footer>
+<div class="ornament-border bottom-border"></div>
 
 <script type="module" src="/src/main.ts"></script>
 </body>
