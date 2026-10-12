@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Game Details - Dyēus Games</title>
+  <link rel="stylesheet" href="/src/style.css">
+</head>
+<body>
+<div id="global-loading-state" class="global-loader hidden">
+  <div class="loader-ornament"></div>
+</div>
+
+<div class="ornament-border top-border"></div>
+
+<header class="site-header">
+  <div class="header-container">
+    <a href="/" class="logo">
+      <span class="logo-text">DYĒUS GAMES</span>
+    </a>
+
+    <nav class="main-nav">
+      <ul>
+        <li><a href="/" class="nav-link">Discover</a></li>
+        <li><a href="/" class="nav-link active">Browse</a></li>
+        <li><a href="#" class="nav-link">News</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main class="main-content details-wrapper">
+  <div id="error-state" class="error-container hidden">
+    <p class="error-message">Failed to load game details.</p>
+  </div>
+
+  <article id="game-details" class="game-details hidden"></article>
+</main>
+
+<div class="ornament-border bottom-border"></div>
+
+<script type="module" src="/src/details.ts"></script>
+</body>
+</html>

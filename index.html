@@ -7,13 +7,17 @@
   <link rel="stylesheet" href="/src/style.css">
 </head>
 <body>
+<div id="global-loading-state" class="global-loader hidden">
+  <div class="loader-ornament"></div>
+</div>
+
 <div class="ornament-border top-border"></div>
 
 <header class="site-header">
   <div class="header-container">
-    <div class="logo">
+    <a href="/" class="logo">
       <span class="logo-text">DYĒUS GAMES</span>
-    </div>
+    </a>
 
     <div class="search-bar">
       <input type="search" id="search-input" placeholder="Search store">
@@ -31,18 +35,14 @@
 
 <main class="main-content">
   <section class="catalog-section">
-    <div id="loading-state" class="state-container hidden">
-      <div class="loader-ornament"></div>
-    </div>
-
-    <div id="error-state" class="state-container hidden">
+    <div id="error-state" class="error-container hidden">
       <p class="error-message">Failed to load data.</p>
     </div>
 
     <div id="games-grid" class="games-grid"></div>
 
     <div id="scroll-trigger" class="scroll-trigger">
-      <div id="more-loader" class="loader-ornament hidden"></div>
+      <div id="more-loader" class="loader-ornament hidden" style="width: 40px; height: 40px;"></div>
     </div>
   </section>
 

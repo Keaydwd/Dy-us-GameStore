@@ -14,7 +14,7 @@ const API_KEY = import.meta.env.VITE_RAWG_API_KEY;
 const BASE_URL = 'https://api.rawg.io/api/games';
 
 const gamesGrid = document.getElementById('games-grid') as HTMLDivElement;
-const loadingState = document.getElementById('loading-state') as HTMLDivElement;
+const globalLoadingState = document.getElementById('global-loading-state') as HTMLDivElement;
 const errorState = document.getElementById('error-state') as HTMLDivElement;
 const searchInput = document.getElementById('search-input') as HTMLInputElement;
 const sortSelect = document.getElementById('sort-select') as HTMLSelectElement;
@@ -43,7 +43,7 @@ async function fetchGames(query: string = '', ordering: string = '-added', genre
         currentPage = 1;
         hasMore = true;
         gamesGrid.innerHTML = '';
-        loadingState.classList.remove('hidden');
+        globalLoadingState.classList.remove('hidden');
         sidebar.classList.add('hidden');
     } else {
         moreLoader.classList.remove('hidden');
@@ -70,7 +70,7 @@ async function fetchGames(query: string = '', ordering: string = '-added', genre
         errorState.classList.remove('hidden');
     } finally {
         isFetching = false;
-        loadingState.classList.add('hidden');
+        globalLoadingState.classList.add('hidden');
         moreLoader.classList.add('hidden');
         if (!isAppend) sidebar.classList.remove('hidden');
     }
@@ -83,7 +83,8 @@ function renderGames(games: Game[], isAppend: boolean): void {
     }
 
     games.forEach(game => {
-        const card = document.createElement('div');
+        const card = document.createElement('a');
+        card.href = `/details.html?id=${game.id}`;
         card.className = 'game-card';
 
         const imageUrl = game.background_image ? game.background_image : '';
@@ -118,12 +119,14 @@ genreSelect.addEventListener('change', () => {
     fetchGames(searchInput.value, sortSelect.value, genreSelect.value, false);
 });
 
-resetFiltersBtn.addEventListener('click', () => {
-    searchInput.value = '';
-    sortSelect.value = '-added';
-    genreSelect.value = '';
-    fetchGames();
-});
+if (resetFiltersBtn) {
+    resetFiltersBtn.addEventListener('click', () => {
+        searchInput.value = '';
+        sortSelect.value = '-added';
+        genreSelect.value = '';
+        fetchGames();
+    });
+}
 
 const observer = new IntersectionObserver((entries) => {
     if (entries[0].isIntersecting && hasMore && !isFetching) {
@@ -132,6 +135,8 @@ const observer = new IntersectionObserver((entries) => {
     }
 }, { rootMargin: '100px' });
 
-observer.observe(scrollTrigger);
+if (scrollTrigger) {
+    observer.observe(scrollTrigger);
+}
 
 fetchGames();
