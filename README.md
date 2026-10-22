@@ -179,7 +179,7 @@ Vite підставляє змінні середовища під час збі
 ## Скріншоти
 
 ```
-![Головна](docs/home1.png)(docs/home2.png)
+![Головна]docs/archive.png
 ```
 ```
 ![Деталі](docs/details.png)
