@@ -1,142 +1,232 @@
-interface Game {
-    id: number;
-    name: string;
-    background_image: string;
-    rating: number;
+import { API_KEY, api, createGameCard, type Game, type Paged } from './shared';
+import { initFeatured } from './featured';
+
+const PAGE_SIZE = '24';
+
+function getRequiredElement<T extends Element>(selector: string): T {
+    const element = document.querySelector<T>(selector);
+
+    if (!element) {
+        throw new Error(`Missing required element: ${selector}`);
+    }
+
+    return element;
 }
 
-interface ApiResponse {
-    results: Game[];
-    next: string | null;
+const gamesGrid = getRequiredElement<HTMLDivElement>('#games-grid');
+const globalLoader = getRequiredElement<HTMLDivElement>('#global-loading-state');
+const errorState = getRequiredElement<HTMLDivElement>('#error-state');
+const searchInput = getRequiredElement<HTMLInputElement>('#search-input');
+const sortSelect = getRequiredElement<HTMLSelectElement>('#sort-select');
+const genreSelect = getRequiredElement<HTMLSelectElement>('#genre-select');
+const resetFiltersBtn = getRequiredElement<HTMLButtonElement>('#reset-filters');
+const scrollTrigger = getRequiredElement<HTMLDivElement>('#scroll-trigger');
+const moreLoader = getRequiredElement<HTMLDivElement>('#more-loader');
+const resultsStatus = getRequiredElement<HTMLParagraphElement>('#results-status');
+
+if (
+    !gamesGrid ||
+    !globalLoader ||
+    !errorState ||
+    !searchInput ||
+    !sortSelect ||
+    !genreSelect ||
+    !resetFiltersBtn ||
+    !scrollTrigger ||
+    !moreLoader ||
+    !resultsStatus
+) {
+    throw new Error('The catalog page is missing required HTML elements.');
 }
-
-const API_KEY = import.meta.env.VITE_RAWG_API_KEY;
-const BASE_URL = 'https://api.rawg.io/api/games';
-
-const gamesGrid = document.getElementById('games-grid') as HTMLDivElement;
-const globalLoadingState = document.getElementById('global-loading-state') as HTMLDivElement;
-const errorState = document.getElementById('error-state') as HTMLDivElement;
-const searchInput = document.getElementById('search-input') as HTMLInputElement;
-const sortSelect = document.getElementById('sort-select') as HTMLSelectElement;
-const genreSelect = document.getElementById('genre-select') as HTMLSelectElement;
-const resetFiltersBtn = document.getElementById('reset-filters') as HTMLButtonElement;
-const sidebar = document.getElementById('sidebar') as HTMLElement;
-const scrollTrigger = document.getElementById('scroll-trigger') as HTMLDivElement;
-const moreLoader = document.getElementById('more-loader') as HTMLDivElement;
 
 let currentPage = 1;
-let isFetching = false;
 let hasMore = true;
+let isFetching = false;
 let currentQuery = '';
 let currentOrdering = '-added';
 let currentGenres = '';
 
-async function fetchGames(query: string = '', ordering: string = '-added', genres: string = '', isAppend: boolean = false): Promise<void> {
-    if (isFetching || (!hasMore && isAppend)) return;
-    isFetching = true;
+let listController: AbortController | null = null;
+let debounceTimer: ReturnType<typeof setTimeout> | undefined;
 
-    currentQuery = query;
-    currentOrdering = ordering;
-    currentGenres = genres;
+function setStatus(message: string): void {
+    resultsStatus.textContent = message;
+}
 
-    if (!isAppend) {
+function setError(message: string): void {
+    errorState.textContent = message;
+    errorState.classList.remove('hidden');
+}
+
+function clearError(): void {
+    errorState.textContent = '';
+    errorState.classList.add('hidden');
+}
+
+function renderGames(games: Game[], append: boolean): void {
+    if (!append) {
+        gamesGrid.replaceChildren();
+    }
+
+    if (games.length === 0 && !append) {
+        const emptyState = document.createElement('div');
+        emptyState.className = 'empty-state';
+
+        const heading = document.createElement('h2');
+        heading.textContent = 'No games found';
+
+        const message = document.createElement('p');
+        message.textContent = 'Try a different search or adjust your filters.';
+
+        emptyState.append(heading, message);
+        gamesGrid.appendChild(emptyState);
+
+        setStatus('No games found.');
+        return;
+    }
+
+    const fragment = document.createDocumentFragment();
+    for (const game of games) {
+        fragment.appendChild(createGameCard(game));
+    }
+    gamesGrid.appendChild(fragment);
+
+    setStatus(`${gamesGrid.querySelectorAll('.game-card').length} games loaded.`);
+}
+
+async function fetchGames(append = false): Promise<void> {
+    if (isFetching || (append && !hasMore)) {
+        return;
+    }
+
+    if (!API_KEY) {
+        clearError();
+        setError('The game catalog is not configured. Please try again later.');
+        setStatus('Catalog unavailable.');
+        return;
+    }
+
+    if (!append) {
+        listController?.abort();
         currentPage = 1;
         hasMore = true;
-        gamesGrid.innerHTML = '';
-        globalLoadingState.classList.remove('hidden');
-        sidebar.classList.add('hidden');
+
+        globalLoader.classList.remove('hidden');
+        scrollTrigger.classList.add('hidden');
+        clearError();
+        setStatus('Loading games...');
     } else {
         moreLoader.classList.remove('hidden');
     }
 
-    errorState.classList.add('hidden');
+    listController = new AbortController();
+    const controller = listController;
+    const requestedPage = currentPage;
+
+    isFetching = true;
 
     try {
-        let url = `${BASE_URL}?key=${API_KEY}&page_size=24&ordering=${ordering}&page=${currentPage}`;
-        if (query) url += `&search=${query}`;
-        if (genres) url += `&genres=${genres}`;
+        const params: Record<string, string> = {
+            page_size: PAGE_SIZE,
+            page: String(requestedPage),
+            ordering: currentOrdering,
+        };
 
-        const response = await fetch(url);
-        if (!response.ok) throw new Error('Failed to fetch');
+        if (currentQuery.trim()) params.search = currentQuery.trim();
+        if (currentGenres) params.genres = currentGenres;
 
-        const data: ApiResponse = await response.json();
+        const data = await api<Paged<Game>>('/games', params, controller.signal);
 
-        if (!data.next || data.results.length === 0) {
-            hasMore = false;
+        if (!Array.isArray(data.results)) {
+            throw new Error('The API returned an invalid game list.');
         }
 
-        renderGames(data.results, isAppend);
-    } catch (error) {
-        errorState.classList.remove('hidden');
+        if (controller.signal.aborted || controller !== listController) {
+            return;
+        }
+
+        renderGames(data.results, append);
+
+        currentPage = requestedPage + 1;
+        hasMore = Boolean(data.next) && data.results.length > 0;
+
+        if (!hasMore) {
+            setStatus(
+                data.results.length === 0 && append
+                    ? 'You have reached the end of the catalog.'
+                    : `${gamesGrid.querySelectorAll('.game-card').length} games loaded. You have reached the end.`,
+            );
+        }
+
+        scrollTrigger.classList.toggle('hidden', !hasMore);
+    } catch (error: unknown) {
+        if (error instanceof Error && error.name === 'AbortError') {
+            return;
+        }
+
+        if (controller !== listController) {
+            return;
+        }
+
+        console.error('Unable to load games:', error);
+
+        if (append) {
+            setError('More games could not be loaded. Scroll again to retry.');
+        } else {
+            gamesGrid.replaceChildren();
+            setError('The catalog could not be loaded. Check your connection and try again.');
+        }
+
+        setStatus('Unable to load games.');
     } finally {
-        isFetching = false;
-        globalLoadingState.classList.add('hidden');
-        moreLoader.classList.add('hidden');
-        if (!isAppend) sidebar.classList.remove('hidden');
+        if (controller === listController) {
+            isFetching = false;
+            globalLoader.classList.add('hidden');
+            moreLoader.classList.add('hidden');
+        }
     }
 }
 
-function renderGames(games: Game[], isAppend: boolean): void {
-    if (!isAppend && games.length === 0) {
-        gamesGrid.innerHTML = '<p>No results found.</p>';
-        return;
-    }
+function applyFilters(): void {
+    currentQuery = searchInput.value.trim();
+    currentOrdering = sortSelect.value;
+    currentGenres = genreSelect.value;
 
-    games.forEach(game => {
-        const card = document.createElement('a');
-        card.href = `/details.html?id=${game.id}`;
-        card.className = 'game-card';
-
-        const imageUrl = game.background_image ? game.background_image : '';
-
-        card.innerHTML = `
-      <div class="game-image-wrapper">
-        <img src="${imageUrl}" alt="${game.name}" class="game-image" loading="lazy">
-      </div>
-      <span class="game-subtitle">Base Game</span>
-      <h3 class="game-title">${game.name}</h3>
-      <span class="game-price">Rating: ${game.rating}</span>
-    `;
-        gamesGrid.appendChild(card);
-    });
+    void fetchGames(false);
 }
 
-let debounceTimer: ReturnType<typeof setTimeout>;
-
-searchInput.addEventListener('input', (e) => {
+searchInput.addEventListener('input', () => {
     clearTimeout(debounceTimer);
-    debounceTimer = setTimeout(() => {
-        const target = e.target as HTMLInputElement;
-        fetchGames(target.value, sortSelect.value, genreSelect.value, false);
-    }, 500);
+
+    listController?.abort();
+    isFetching = false;
+
+    debounceTimer = setTimeout(applyFilters, 350);
 });
 
-sortSelect.addEventListener('change', () => {
-    fetchGames(searchInput.value, sortSelect.value, genreSelect.value, false);
+sortSelect.addEventListener('change', applyFilters);
+genreSelect.addEventListener('change', applyFilters);
+
+resetFiltersBtn.addEventListener('click', () => {
+    clearTimeout(debounceTimer);
+
+    searchInput.value = '';
+    sortSelect.value = '-added';
+    genreSelect.value = '';
+
+    applyFilters();
 });
 
-genreSelect.addEventListener('change', () => {
-    fetchGames(searchInput.value, sortSelect.value, genreSelect.value, false);
-});
+const observer = new IntersectionObserver(
+    (entries) => {
+        if (entries[0]?.isIntersecting && hasMore && !isFetching) {
+            void fetchGames(true);
+        }
+    },
+    { rootMargin: '300px 0px' },
+);
 
-if (resetFiltersBtn) {
-    resetFiltersBtn.addEventListener('click', () => {
-        searchInput.value = '';
-        sortSelect.value = '-added';
-        genreSelect.value = '';
-        fetchGames();
-    });
-}
+observer.observe(scrollTrigger);
 
-const observer = new IntersectionObserver((entries) => {
-    if (entries[0].isIntersecting && hasMore && !isFetching) {
-        currentPage++;
-        fetchGames(currentQuery, currentOrdering, currentGenres, true);
-    }
-}, { rootMargin: '100px' });
-
-if (scrollTrigger) {
-    observer.observe(scrollTrigger);
-}
-
-fetchGames();
+void initFeatured();
+void fetchGames();
