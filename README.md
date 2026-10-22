@@ -178,9 +178,9 @@ Vite підставляє змінні середовища під час збі
 
 ## Скріншоти
 
-```
-![Головна]docs/archive.png
-```
+
+![Головна](https://github.com/Keaydwd/Dy-us-GameStore/blob/main/docs/archive.png)
+
 ```
 ![Деталі](docs/details.png)
 ```
