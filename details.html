@@ -1,44 +1,89 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Game Details - Dyēus Games</title>
-  <link rel="stylesheet" href="/src/style.css">
-</head>
-<body>
-<div id="global-loading-state" class="global-loader hidden">
-  <div class="loader-ornament"></div>
-</div>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<div class="ornament-border top-border"></div>
+        <meta
+            name="description"
+            content="Explore game details, descriptions, platforms, and community ratings in the Dyēus Games archive."
+        />
+        <meta name="theme-color" content="#101310" />
 
-<header class="site-header">
-  <div class="header-container">
-    <a href="/" class="logo">
-      <span class="logo-text">DYĒUS GAMES</span>
-    </a>
+        <title>Game Details | Dyēus Games</title>
 
-    <nav class="main-nav">
-      <ul>
-        <li><a href="/" class="nav-link">Discover</a></li>
-        <li><a href="/" class="nav-link active">Browse</a></li>
-        <li><a href="#" class="nav-link">News</a></li>
-      </ul>
-    </nav>
-  </div>
-</header>
+        <link rel="preconnect" href="https://api.rawg.io" />
+        <link rel="preconnect" href="https://media.rawg.io" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
-<main class="main-content details-wrapper">
-  <div id="error-state" class="error-container hidden">
-    <p class="error-message">Failed to load game details.</p>
-  </div>
+        <link
+            href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+            rel="stylesheet"
+        />
 
-  <article id="game-details" class="game-details hidden"></article>
-</main>
+        <link rel="stylesheet" href="/src/style.css" />
+        <script type="module" src="/src/details.ts"></script>
+    </head>
 
-<div class="ornament-border bottom-border"></div>
+    <body>
+        <a class="skip-link" href="#main-content">Skip to content</a>
 
-<script type="module" src="/src/details.ts"></script>
-</body>
+        <div class="site-shell">
+            <header class="site-header">
+                <div class="header-container">
+                    <a class="brand" href="./index.html" aria-label="Dyēus Games home">
+                        <span class="brand-symbol" aria-hidden="true">✳</span>
+                        <span class="brand-copy">
+                            <span class="brand-name">DYĒUS</span>
+                            <span class="brand-caption">GAMES ARCHIVE</span>
+                        </span>
+                    </a>
+
+                    <nav class="main-nav" aria-label="Main navigation">
+                        <a class="nav-link" href="./index.html">Discover</a>
+                        <a class="nav-link" href="./developers.html">Developers</a>
+                        <a class="nav-link" href="./favorites.html"
+                            >My Archive
+                            <span class="nav-badge" data-wishlist-count hidden>0</span></a
+                        >
+                        <a
+                            class="nav-link nav-link-external"
+                            href="https://rawg.io/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            RAWG ↗
+                        </a>
+                    </nav>
+                </div>
+            </header>
+
+            <main id="main-content" class="details-page">
+                <div
+                    id="global-loading-state"
+                    class="global-loader hidden"
+                    role="status"
+                    aria-label="Loading game details"
+                >
+                    <span class="loader-symbol" aria-hidden="true">✳</span>
+                    <span class="loader-label">REVEALING THE WORLD</span>
+                </div>
+
+                <div id="error-state" class="error-container hidden" role="alert"></div>
+
+                <article id="game-details" class="game-details hidden"></article>
+            </main>
+
+            <footer class="site-footer">
+                <a class="footer-brand" href="./index.html">DYĒUS GAMES</a>
+                <p>Inspired by the light of the open sky.</p>
+                <p class="footer-credit">
+                    Game data provided by
+                    <a href="https://rawg.io/" target="_blank" rel="noopener noreferrer"> RAWG </a>
+                </p>
+            </footer>
+        </div>
+    </body>
 </html>
