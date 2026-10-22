@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Your personal collection of games saved in the Dyēus Games archive." />
+    <meta name="theme-color" content="#101310" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Dyēus Games" />
+    <meta property="og:title" content="My Archive | Dyēus Games" />
+    <meta property="og:description" content="Your personal collection of games saved in the Dyēus Games archive." />
+
+    <title>My Archive | Dyēus Games</title>
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://media.rawg.io" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="/src/style.css" />
+    <script type="module" src="/src/favorites.ts"></script>
+</head>
+
+<body>
+<a class="skip-link" href="#main-content">Skip to content</a>
+
+<div class="site-shell">
+    <header class="site-header">
+        <div class="header-container">
+            <a class="brand" href="./index.html" aria-label="Dyēus Games home">
+                <span class="brand-symbol" aria-hidden="true">✳</span>
+                <span class="brand-copy">
+          <span class="brand-name">DYĒUS</span>
+          <span class="brand-caption">GAMES ARCHIVE</span>
+        </span>
+            </a>
+
+            <nav class="main-nav" aria-label="Main navigation">
+                <a class="nav-link" href="./index.html">Discover</a>
+                <a class="nav-link" href="./developers.html">Developers</a>
+                <a class="nav-link active" href="./favorites.html" aria-current="page">My Archive <span class="nav-badge" data-wishlist-count hidden>0</span></a>
+                <a class="nav-link nav-link-external" href="https://rawg.io/" target="_blank" rel="noopener noreferrer">RAWG ↗</a>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main-content">
+        <section class="collection-section">
+            <div class="section-intro">
+                <div>
+                    <p class="eyebrow">YOUR PERSONAL COLLECTION</p>
+                    <h1 class="page-title">My Archive.</h1>
+                </div>
+                <p class="section-description">
+                    Worlds you want to return to. Saved on this device, always within reach.
+                </p>
+            </div>
+
+            <div id="fav-stats" class="fav-stats hidden">
+                <div class="stat">
+                    <span class="stat-value" id="stat-count">0</span>
+                    <span class="stat-label">Saved games</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value" id="stat-rating">—</span>
+                    <span class="stat-label">Average rating</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value" id="stat-genre">—</span>
+                    <span class="stat-label">Favourite genre</span>
+                </div>
+            </div>
+
+            <div id="fav-content" class="hidden">
+                <div class="catalog-toolbar">
+                    <div class="search-bar">
+                        <label class="visually-hidden" for="fav-search">Search saved games</label>
+                        <span class="search-icon" aria-hidden="true">⌕</span>
+                        <input type="search" id="fav-search" placeholder="Search your archive..." autocomplete="off" spellcheck="false" />
+                    </div>
+
+                    <div class="filter-controls">
+                        <div class="filter-control">
+                            <label for="fav-sort">Sort by</label>
+                            <select id="fav-sort">
+                                <option value="recent">Recently saved</option>
+                                <option value="name">Name A–Z</option>
+                                <option value="rating">Highest rated</option>
+                                <option value="released">Newest releases</option>
+                            </select>
+                        </div>
+                        <button type="button" class="reset-button" id="fav-clear">Clear all</button>
+                    </div>
+                </div>
+
+                <div id="genre-chips" class="chips" role="group" aria-label="Filter by genre"></div>
+
+                <div class="results-heading">
+                    <p id="fav-status" role="status" aria-live="polite"></p>
+                    <span class="results-ornament" aria-hidden="true">✳</span>
+                </div>
+
+                <h2 class="visually-hidden">Saved games</h2>
+                <div id="fav-grid" class="games-grid" aria-label="Saved games"></div>
+            </div>
+
+            <div id="fav-empty" class="fav-empty hidden">
+                <span class="fav-empty-symbol" aria-hidden="true">✳</span>
+                <h2>Your archive is empty.</h2>
+                <p>Tap the heart on any game to keep it here for later.</p>
+                <a class="featured-btn" href="./index.html">Explore games <span aria-hidden="true">→</span></a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <a class="footer-brand" href="./index.html">DYĒUS GAMES</a>
+        <p>Inspired by the light of the open sky.</p>
+        <p class="footer-credit">
+            Game data provided by
+            <a href="https://rawg.io/" target="_blank" rel="noopener noreferrer">RAWG</a>
+        </p>
+    </footer>
+</div>
+</body>
+</html>
