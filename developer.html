@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="theme-color" content="#101310" />
+
+        <title>Developer | Dyēus Games</title>
+
+        <link rel="preconnect" href="https://api.rawg.io" />
+        <link rel="preconnect" href="https://media.rawg.io" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+            rel="stylesheet"
+        />
+
+        <link rel="stylesheet" href="/src/style.css" />
+        <script type="module" src="/src/developer.ts"></script>
+    </head>
+
+    <body>
+        <a class="skip-link" href="#main-content">Skip to content</a>
+
+        <div class="site-shell">
+            <header class="site-header">
+                <div class="header-container">
+                    <a class="brand" href="./index.html" aria-label="Dyēus Games home">
+                        <span class="brand-symbol" aria-hidden="true">✳</span>
+                        <span class="brand-copy">
+                            <span class="brand-name">DYĒUS</span>
+                            <span class="brand-caption">GAMES ARCHIVE</span>
+                        </span>
+                    </a>
+
+                    <nav class="main-nav" aria-label="Main navigation">
+                        <a class="nav-link" href="./index.html">Discover</a>
+                        <a class="nav-link active" href="./developers.html" aria-current="page"
+                            >Developers</a
+                        >
+                        <a class="nav-link" href="./favorites.html"
+                            >My Archive
+                            <span class="nav-badge" data-wishlist-count hidden>0</span></a
+                        >
+
+                        <a
+                            class="nav-link nav-link-external"
+                            href="https://rawg.io/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            >RAWG ↗</a
+                        >
+                    </nav>
+                </div>
+            </header>
+
+            <main id="main-content" class="details-page">
+                <div id="developer-root" class="game-details">
+                    <div class="global-loader" role="status" aria-label="Loading studio">
+                        <span class="loader-symbol" aria-hidden="true">✳</span>
+                        <span class="loader-label">OPENING THE ARCHIVE</span>
+                    </div>
+                </div>
+            </main>
+
+            <footer class="site-footer">
+                <a class="footer-brand" href="./index.html">DYĒUS GAMES</a>
+                <p>Inspired by the light of the open sky.</p>
+                <p class="footer-credit">
+                    Game data provided by
+                    <a href="https://rawg.io/" target="_blank" rel="noopener noreferrer">RAWG</a>
+                </p>
+            </footer>
+        </div>
+    </body>
+</html>

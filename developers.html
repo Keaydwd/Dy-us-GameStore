@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="The studios and developers behind the worlds in the Dyēus Games archive." />
+    <meta name="theme-color" content="#101310" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Dyēus Games" />
+    <meta property="og:title" content="Developers | Dyēus Games" />
+    <meta property="og:description" content="The studios and developers behind the worlds in the Dyēus Games archive." />
+
+    <title>Developers | Dyēus Games</title>
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://api.rawg.io" />
+    <link rel="preconnect" href="https://media.rawg.io" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="/src/style.css" />
+    <script type="module" src="/src/developers.ts"></script>
+</head>
+
+<body>
+<a class="skip-link" href="#main-content">Skip to content</a>
+
+<div class="site-shell">
+    <header class="site-header">
+        <div class="header-container">
+            <a class="brand" href="./index.html" aria-label="Dyēus Games home">
+                <span class="brand-symbol" aria-hidden="true">✳</span>
+                <span class="brand-copy">
+          <span class="brand-name">DYĒUS</span>
+          <span class="brand-caption">GAMES ARCHIVE</span>
+        </span>
+            </a>
+
+            <nav class="main-nav" aria-label="Main navigation">
+                <a class="nav-link" href="./index.html">Discover</a>
+                <a class="nav-link active" href="./developers.html" aria-current="page">Developers</a>
+                <a class="nav-link" href="./favorites.html">My Archive <span class="nav-badge" data-wishlist-count hidden>0</span></a>
+                <a class="nav-link nav-link-external" href="https://rawg.io/" target="_blank" rel="noopener noreferrer">RAWG ↗</a>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main-content">
+        <section class="collection-section">
+            <div class="section-intro">
+                <div>
+                    <p class="eyebrow">THE MAKERS BEHIND THE WORLDS</p>
+                    <h1 class="page-title">Studios &amp; developers.</h1>
+                </div>
+                <p class="section-description">
+                    The teams who turn ideas into places worth getting lost in.
+                </p>
+            </div>
+
+            <div id="top-section" class="dev-block">
+                <div class="results-heading">
+                    <p>HANDPICKED STUDIOS</p>
+                    <span class="results-ornament" aria-hidden="true">✳</span>
+                </div>
+                <h2 class="visually-hidden">Handpicked studios</h2>
+                <div id="top-grid" class="dev-grid" aria-label="Top studios"></div>
+            </div>
+
+            <div class="dev-block">
+                <div class="results-heading">
+                    <p id="devs-status" role="status" aria-live="polite">Preparing the archive...</p>
+                    <span class="results-ornament" aria-hidden="true">✳</span>
+                </div>
+
+                <div id="devs-error" class="error-container hidden" role="alert"></div>
+                <h2 class="visually-hidden">All studios</h2>
+                <div id="devs-grid" class="dev-grid" aria-label="All studios"></div>
+
+                <div id="devs-loader" class="global-loader hidden" role="status" aria-label="Loading studios">
+                    <span class="loader-symbol" aria-hidden="true">✳</span>
+                    <span class="loader-label">GATHERING STUDIOS</span>
+                </div>
+
+                <div class="load-more-wrap">
+                    <button type="button" id="load-more" class="load-more-btn hidden">Load more studios</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="closing-section" aria-label="About the archive">
+            <span class="closing-symbol" aria-hidden="true">✳</span>
+            <p>Behind every world, there are people.</p>
+            <span class="closing-caption">EXPLORE WITH CURIOSITY</span>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <a class="footer-brand" href="./index.html">DYĒUS GAMES</a>
+        <p>Inspired by the light of the open sky.</p>
+        <p class="footer-credit">
+            Game data provided by
+            <a href="https://rawg.io/" target="_blank" rel="noopener noreferrer">RAWG</a>
+        </p>
+    </footer>
+</div>
+</body>
+</html>
